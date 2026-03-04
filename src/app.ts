@@ -39,6 +39,11 @@ export function startServer() {
     //json body parser
     app.use(express.json());
 
+    // --- ROOT ROUTE ---
+    app.get('/', (req: Request, res: Response) => {
+        res.json({ status: 'ok', message: 'API is running!' });
+    });
+
     //bind routes to application
     app.use('/api', routes);
 
