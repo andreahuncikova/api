@@ -59,21 +59,22 @@ export async function seedData() {
   await user2.save();
 
   // Generate fake book
-  for (let index = 0; index < 20; index++) {
-    await new BookModel(
-      {
-        name: faker.commerce.productName(),
-        description: faker.commerce.productDescription(),
-        imageURL: "https://picsum.photos/500/500",
-        price: faker.commerce.price({ min: 5, max: 5000 }),
-        stock: faker.number.int({ min: 0, max: 200 }),
-        isOnDiscount: faker.datatype.boolean(0.50),
-        discountPct: faker.number.int({ min: 0, max: 100 }),
-        isHidden: false,
-        _createdBy: user1.id
-      }
-    ).save();
-  }
+    for (let i = 0; i < 20; i++) {
+        await new BookModel({
+            title: faker.commerce.productName(),
+            author: faker.person.fullName(),
+            image: "https://picsum.photos/500/500",
+            price: parseFloat(faker.commerce.price({ min: 5, max: 5000 })),
+            genre: faker.music.genre(),
+            publishedYear: faker.date.past({ years: 50 }).getFullYear(),
+            pages: faker.number.int({ min: 50, max: 1200 }),
+            summary: faker.lorem.paragraph(),
+            available: faker.datatype.boolean(),
+            _createdBy: user1.id
+        }).save();
+    }
+
+    console.log("Seeded data successfully...");
 
   console.log("Seeded data successfully...");
 };

@@ -21,7 +21,7 @@ export function setupDocumentation(app: Application) {
         description: 'Local development server',
       },
       {
-        url: 'https://ments-api-kex4.onrender.com/api/',
+        url: 'https://api-e7dw.onrender.com/api-docs/',
         description: 'Remote development server',
       }
     ],
