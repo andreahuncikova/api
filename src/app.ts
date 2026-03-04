@@ -53,8 +53,8 @@ export function startServer() {
     app.use(express.static(path.join(__dirname, "../2025-MEVN-TS-YT-Template/dist")));
 
     // Catch-all route: všetko, čo nie je /api/... alebo /api-docs, smeruje na index.html
-    app.get("*", (req: Request, res: Response) => {
-        res.sendFile(path.join(__dirname, "../2025-MEVN-TS-YT-Template/dist/index.html"));
+    app.get(/.*/, (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, "../2025-MEVN-TS-YT-Template/dist/index.html"));
     });
 
     //start server
