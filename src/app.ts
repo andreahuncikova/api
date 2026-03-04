@@ -1,3 +1,4 @@
+import path from "path";
 import express, { Application, Request, Response } from 'express';
 import dotenvFlow from "dotenv-flow";
 import { testConnection } from './repository/database';
@@ -39,11 +40,6 @@ export function startServer() {
     //json body parser
     app.use(express.json());
 
-    // --- ROOT ROUTE ---
-    app.get('/', (req: Request, res: Response) => {
-        res.json({ status: 'ok', message: 'API is running!' });
-    });
-
     //bind routes to application
     app.use('/api', routes);
 
@@ -52,6 +48,14 @@ export function startServer() {
 
     // test database connection
     testConnection();
+
+    // Serve Vue frontend build
+    app.use(express.static(path.join(__dirname, "../2025-MEVN-TS-YT-Template/dist")));
+
+    // Catch-all route: všetko, čo nie je /api/... alebo /api-docs, smeruje na index.html
+    app.get("*", (req: Request, res: Response) => {
+        res.sendFile(path.join(__dirname, "../2025-MEVN-TS-YT-Template/dist/index.html"));
+    });
 
     //start server
     const PORT: number = parseInt(process.env.PORT as string) || 4000;
