@@ -50,11 +50,12 @@ export function startServer() {
     testConnection();
 
     // Serve Vue frontend build
-    app.use(express.static(path.join(__dirname, "../2025-MEVN-TS-YT-Template/dist")));
+    const frontendPath = path.join(__dirname, "../../2025-MEVN-TS-YT-Template/dist");
+    app.use(express.static(frontendPath));
 
-    // Catch-all route: všetko, čo nie je /api/... alebo /api-docs, smeruje na index.html
+    // Catch-all route for frontend (all other routes)
     app.get(/.*/, (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, "../2025-MEVN-TS-YT-Template/dist/index.html"));
+        res.sendFile(path.join(frontendPath, "index.html"));
     });
 
     //start server
