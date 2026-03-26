@@ -3,7 +3,8 @@ import {
   type Response
 } from "express";
 
-import cron, { ScheduledTask } from "node-cron";
+import * as cron from "node-cron";
+import { ScheduledTask } from "node-cron";
 import https from "https";
 
 // Settings
@@ -59,7 +60,7 @@ export async function startCron(req: Request, res: Response) {
 
     //Initialize the task with the specified cronPattern
     counter = totalDuration; // set counter, so we can output how much time is left
-    task = cron.schedule(cronPattern, pingServer, { scheduled: false });
+    task = cron.schedule(cronPattern, pingServer,);
     task.start();
 
     setTimeout(stopPingingServer, totalDuration * 60 * 1000);
