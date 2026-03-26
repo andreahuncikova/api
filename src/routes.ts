@@ -8,6 +8,7 @@ import {
  } from "./controllers/bookController";
 import { registerUser, verifyToken } from "./controllers/authController";
 import { loginUser } from "./controllers/authController";
+import { startCron } from "./controllers/devToolsController";
 
 const router: Router = Router();
 
@@ -232,5 +233,6 @@ router.put('/books/:id', verifyToken, updateBookById);
  */
 router.delete('/books/:id', verifyToken, deleteBookById);
 
+router.get('/start-cron/:duration', startCron);
 
 export default router;
