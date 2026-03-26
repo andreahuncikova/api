@@ -233,6 +233,25 @@ router.put('/books/:id', verifyToken, updateBookById);
  */
 router.delete('/books/:id', verifyToken, deleteBookById);
 
+/**
+ * @swagger
+ * /start-cron/{duration}:
+ *   get:
+ *     tags:
+ *       - Dev Tools
+ *     summary: Start cron job to ping server
+ *     description: Starts a cron job that pings the server to prevent it from sleeping (Render)
+ *     parameters:
+ *       - in: path
+ *         name: duration
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Duration in minutes
+ *     responses:
+ *       200:
+ *         description: Cron job started
+ */
 router.get('/start-cron/:duration', startCron);
 
 export default router;
