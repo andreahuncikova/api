@@ -34,6 +34,10 @@ function connect() {
             if (!process.env.DBHOST) {
                 throw new Error("DBHOST is not defined in environment variables");
             }
+            if (mongoose_1.default.connection.readyState === 1) {
+                console.log("Already connected to the database");
+                return;
+            }
             yield mongoose_1.default.connect(process.env.DBHOST);
             if (mongoose_1.default.connection.db) {
                 yield mongoose_1.default.connection.db.admin().command({ ping: 1 });
@@ -45,6 +49,7 @@ function connect() {
         }
         catch (error) {
             console.error("Database connection error:", error);
+            throw error;
         }
     });
 }
