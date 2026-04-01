@@ -18,6 +18,11 @@ export async function connect() {
         if (!process.env.DBHOST) {
             throw new Error("DBHOST is not defined in environment variables");
         }
+
+        if (mongoose.connection.readyState === 1) {
+            console.log("Already connected to the database");
+            return;
+        }
         await mongoose.connect(process.env.DBHOST);
 
         if (mongoose.connection.db) {
