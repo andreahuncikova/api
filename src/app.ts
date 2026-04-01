@@ -49,14 +49,6 @@ export function startServer() {
     // test database connection
     testConnection();
 
-    // Serve Vue frontend build
-    const frontendPath = path.join(__dirname, "../../2025-MEVN-TS-YT-Template/dist");
-    app.use(express.static(frontendPath));
-
-    // Catch-all route for frontend (all other routes)
-    app.get(/.*/, (req: Request, res: Response) => {
-        res.sendFile(path.join(frontendPath, "index.html"));
-    });
 
     //start server
     const PORT: number = parseInt(process.env.PORT as string) || 4000;

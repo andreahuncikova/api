@@ -38,8 +38,8 @@ export async function registerUser(req: Request, res: Response) {
     const emailExists = await userModel.findOne({ email: req.body.email });
 
     if (emailExists) {
-      res.status(400).json({ error: "Email already exists." });
-      return;
+    res.status(409).json({ error: "Email already exists." });
+    return;
     }
 
     // hash the password before saving the user to the repository
@@ -57,8 +57,12 @@ export async function registerUser(req: Request, res: Response) {
     res.status(201).json({ error: null, data: savedUser._id });
 
   } catch (error) {
-    res.status(500).send("Error registrering user. Error: " + error);
-  }
+  console.error(error);
+
+  res.status(500).json({
+    error: "Internal server error"
+  });
+}
   finally {
     await disconnect();
   }
@@ -120,8 +124,12 @@ export async function loginUser(req: Request, res: Response) {
     }
 
   } catch (error) {
-    res.status(500).send("Error logging in user. Error: " + error);
-  }
+  console.error(error);
+
+  res.status(500).json({
+    error: "Internal server error"
+  });
+}
   finally {
     await disconnect();
   }

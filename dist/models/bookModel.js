@@ -5,6 +5,8 @@ const mongoose_1 = require("mongoose");
 const bookSchema = new mongoose_1.Schema({
     title: { type: String, required: true, min: 1, max: 255 },
     author: { type: String, required: true, min: 1, max: 255 },
+    image: { type: String, required: true },
+    price: { type: Number, required: true },
     genre: { type: String, required: false, max: 100 },
     publishedYear: { type: Number, required: false },
     pages: { type: Number, required: false },
