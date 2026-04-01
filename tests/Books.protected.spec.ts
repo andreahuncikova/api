@@ -1,6 +1,7 @@
 import { test, expect, request } from "@playwright/test";
 
 const BASE_URL = "https://api-e7dw.onrender.com/api";
+const BASE_URL = "/api";
 
 const TEST_USER = {
   name: "BooksProtectedUser",
@@ -30,6 +31,9 @@ test.describe("Books – Protected Routes", () => {
     const ctx = await request.newContext();
     await ctx.post(`${BASE_URL}/auth/register`, { data: TEST_USER });
     const loginRes = await ctx.post(`${BASE_URL}/auth/login`, {
+  test.beforeAll(async ({ request }) => {
+    await request.post(`${BASE_URL}/auth/register`, { data: TEST_USER });
+    const loginRes = await request.post(`${BASE_URL}/auth/login`, {
       data: { email: TEST_USER.email, password: TEST_USER.password },
     });
     const body = await loginRes.json();

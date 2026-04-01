@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 
-const BASE_URL = "https://api-e7dw.onrender.com/api";
+const BASE_URL = "http://localhost:4000/api";
+const BASE_URL = "/api";
 
 const TEST_USER = {
   name: "TestUser",

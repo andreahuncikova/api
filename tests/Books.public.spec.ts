@@ -1,6 +1,7 @@
 import { test, expect, request } from "@playwright/test";
 
 const BASE_URL = "https://api-e7dw.onrender.com/api";
+const BASE_URL = "/api";
 
 const TEST_USER = {
   name: "BooksPublicUser",
@@ -30,12 +31,16 @@ test.describe("Books – Public Routes", () => {
 
     await ctx.post(`${BASE_URL}/auth/register`, { data: TEST_USER });
     const loginRes = await ctx.post(`${BASE_URL}/auth/login`, {
+  test.beforeAll(async ({ request }) => {
+    await request.post(`${BASE_URL}/auth/register`, { data: TEST_USER });
+    const loginRes = await request.post(`${BASE_URL}/auth/login`, {
       data: { email: TEST_USER.email, password: TEST_USER.password },
     });
     const loginBody = await loginRes.json();
     const token = loginBody.data.token; // { error: null, data: { userId, token } }
 
     const createRes = await ctx.post(`${BASE_URL}/books`, {
+    const createRes = await request.post(`${BASE_URL}/books`, {
       data: BOOK_PAYLOAD,
       headers: { "auth-token": token },
     });

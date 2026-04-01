@@ -1,13 +1,12 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Health Check", () => {
-  test.setTimeout(60000);
+export default function health() {
+    test("Health check", async ({ request }) => {
 
-  test("GET / should return 200 and welcome message", async ({ request }) => {
-    const res = await request.get(`/api/`);
+        const response = await request.get("/api/")
+        const json = await response.json();    
 
-    expect(res.status()).toBe(200);
-    const body = await res.text();
-    expect(body).toContain("Welcome");
-  });
-});
+        expect(response.status()).toBe(200);
+        expect(json).toEqual({ message: 'Welcome to the TypeScript MEN REST-API' });
+    });
+};
