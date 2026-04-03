@@ -9,7 +9,8 @@
     "start-dev": "npx nodemon",
     "testdb": "cross-env NODE_ENV=test npx ts-node ./src/index.ts",
     "seed": "npx ts-node ./src/util/dataSeeder.ts",
-    "lint": "npx eslint"
+    "lint": "npx eslint",
+    "start-ci": "ts-node ./src/index.ts"
   },
   "author": "andrea",
   "license": "ISC",
