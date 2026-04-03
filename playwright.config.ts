@@ -15,6 +15,11 @@ export default defineConfig({
 
   timeout: 30000, // Zvýšenie na 30 sekúnd
   testDir: './tests',
+  /* 
+   * Since Index.spec.ts orchestrates the suite by importing other spec files, 
+   * we limit test discovery to only the Index file to avoid import errors.
+   */
+  testMatch: 'Index.spec.ts',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

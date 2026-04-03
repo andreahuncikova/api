@@ -41,7 +41,7 @@ jobs:
           PORT: 4000
           NODE_ENV: test
           TOKEN_SECRET: ${{ secrets.TOKEN_SECRET || 'ci_test_secret_123' }}
-          MONGO_URI: mongodb://localhost:27017/test_db
+          DBHOST: mongodb://localhost:27017/test_db
         run: npx start-server-and-test start-ci http://127.0.0.1:4000/api "npx playwright test"
 
       - name: Upload Playwright report
