@@ -35,11 +35,11 @@ jobs:
 
       - name: Run tests with server
         env:
-        PORT: 4000
-        NODE_ENV: test
-        TOKEN_SECRET: ${{ secrets.TOKEN_SECRET || 'ci_test_secret_123' }}
-        MONGO_URI: mongodb://localhost:27017/test_db
-        run: npx start-server-and-test start-ci http://localhost:4000 "npx playwright test"
+          PORT: 4000
+          NODE_ENV: test
+          TOKEN_SECRET: ${{ secrets.TOKEN_SECRET || 'ci_test_secret_123' }}
+          MONGO_URI: mongodb://localhost:27017/test_db
+          run: npx start-server-and-test start-ci http://localhost:4000 "npx playwright test"
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
