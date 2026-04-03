@@ -12,7 +12,7 @@ const bookSchema = new mongoose_1.Schema({
     pages: { type: Number, required: false },
     summary: { type: String, required: false, max: 1024 },
     available: { type: Boolean, required: true, default: true },
-    _createdBy: { type: String, ref: "User", required: true }
+    _createdBy: { type: String, ref: "User", required: false }
 }, { timestamps: true });
 exports.BookModel = (0, mongoose_1.model)("Book", bookSchema);
 //# sourceMappingURL=bookModel.js.map

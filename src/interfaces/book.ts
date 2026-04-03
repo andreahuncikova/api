@@ -10,5 +10,5 @@ export interface Book {
     pages?: number;
     summary?: string;
     available?: boolean;
-    _createdBy: User['id'];
+    _createdBy?: User['id'];
 }

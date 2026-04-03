@@ -8,4 +8,6 @@ const userSchema = new Schema<User>({
     registerDate: { type: Date, default: Date.now, required: true}
 });
 
+
+
 export const userModel = model<User>('User', userSchema);

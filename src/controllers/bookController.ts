@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { BookModel } from "../models/bookModel";
 import { connect, disconnect } from "../repository/database";
+import jwt from "jsonwebtoken";
 
 // crud operations for books
 /**

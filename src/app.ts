@@ -1,7 +1,7 @@
 import path from "path";
 import express, { Application, Request, Response } from 'express';
 import dotenvFlow from "dotenv-flow";
-import { testConnection } from './repository/database';
+import { connect } from './repository/database';
 import routes from './routes';
 import { setupDocumentation } from './util/documentation';
 import cors from 'cors';
@@ -32,7 +32,7 @@ function setupCors() {
 } 
 
 
-export function startServer() {
+export async function startServer() {
 
     //setup CORS
     setupCors();
@@ -47,7 +47,7 @@ export function startServer() {
     setupDocumentation(app);
 
     // test database connection
-    testConnection();
+    await connect();
 
 
     //start server

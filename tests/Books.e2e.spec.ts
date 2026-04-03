@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const BASE_URL = "https://api-e7dw.onrender.com/api";
+const BASE_URL = "/api";
 
 const BOOK_PAYLOAD = {
   title: "E2E Flow Book",
@@ -14,6 +14,8 @@ const BOOK_PAYLOAD = {
   available: true,
 };
 
+
+export default function booksE2eTests() {
 test.describe("Full E2E Flow", () => {
   test.setTimeout(60000);
 
@@ -86,3 +88,4 @@ test.describe("Full E2E Flow", () => {
     }
   });
 });
+}

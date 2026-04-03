@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 
+export default function devToolsTests() {
 test.describe("Dev Tools – Cron Routes", () => {
 
   test("GET /start-cron/:duration should return 200 with plain text", async ({ request }) => {
@@ -38,3 +39,4 @@ test.describe("Dev Tools – Cron Routes", () => {
   });
 
 });
+}

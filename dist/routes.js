@@ -19,9 +19,7 @@ const router = (0, express_1.Router)();
  *         description: Server up and running.
  */
 router.get('/', (req, res) => {
-    //connect to database 
-    res.status(200).send('Welcome to this API');
-    // disconnect from database
+    res.status(200).json({ message: 'Welcome to the TypeScript MEN REST-API' });
 });
 // AUTH
 /**

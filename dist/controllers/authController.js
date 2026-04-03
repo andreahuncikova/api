@@ -139,7 +139,7 @@ function verifyToken(req, res, next) {
         next();
     }
     catch (_a) {
-        res.status(401).send("Invalid Token");
+        res.status(401).json({ error: "Invalid Token." });
     }
 }
 /**

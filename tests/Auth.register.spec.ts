@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test";
 
-const BASE_URL = "http://localhost:4000/api";
 const BASE_URL = "/api";
 
 const TEST_USER = {
@@ -9,6 +8,7 @@ const TEST_USER = {
   password: "Test1234!",
 };
 
+export default function authRegisterTests() {
 test.describe("Auth – Register", () => {
   test.setTimeout(60000);
 
@@ -70,3 +70,4 @@ test.describe("Auth – Register", () => {
     expect(res.status()).toBe(400);
   });
 });
+}

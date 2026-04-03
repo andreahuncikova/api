@@ -1,6 +1,6 @@
 import { test, expect, request } from "@playwright/test";
 
-const BASE_URL = "https://api-e7dw.onrender.com/api";
+const BASE_URL = "/api"; // Použitie relatívnej cesty
 
 const TEST_USER = {
   name: "LoginUser",
@@ -8,13 +8,13 @@ const TEST_USER = {
   password: "Test1234!",
 };
 
+
+export default function authLoginTests() {
 test.describe("Auth – Login", () => {
   test.setTimeout(60000);
 
-  test.beforeAll(async () => {
-    const ctx = await request.newContext();
-    await ctx.post(`${BASE_URL}/auth/register`, { data: TEST_USER });
-    await ctx.dispose();
+  test.beforeAll(async ({ request }) => {
+    await request.post(`${BASE_URL}/auth/register`, { data: TEST_USER });
   });
 
   test("POST /auth/login should return a token (200)", async ({ request }) => {
@@ -66,3 +66,4 @@ test.describe("Auth – Login", () => {
     expect(res.status()).toBe(400);
   });
 });
+}

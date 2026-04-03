@@ -107,7 +107,7 @@ export async function loginUser(req: Request, res: Response) {
         return;
       }
 
-      const userId: string = user.id;
+      const userId: string = user.id!;
       const token: string = jwt.sign(
         {
           // payload
@@ -158,7 +158,7 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
     next();
   }
   catch {
-    res.status(401).send("Invalid Token");
+    res.status(401).json({ error: "Invalid Token." });
   }
 }
 

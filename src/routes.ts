@@ -27,9 +27,7 @@ const router: Router = Router();
 
 
 router.get('/', (req: Request, res: Response) => {
-    //connect to database 
-    res.status(200).send('Welcome to this API');
-    // disconnect from database
+    res.status(200).json({ message: 'Welcome to the TypeScript MEN REST-API' });
 });
 
 

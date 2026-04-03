@@ -1,6 +1,5 @@
 import { test, expect, request } from "@playwright/test";
 
-const BASE_URL = "https://api-e7dw.onrender.com/api";
 const BASE_URL = "/api";
 
 const TEST_USER = {
@@ -24,13 +23,11 @@ const BOOK_PAYLOAD = {
 let authToken: string;
 let createdBookId: string;
 
+
+export default function booksProtectedTests() {
 test.describe("Books – Protected Routes", () => {
   test.setTimeout(60000);
 
-  test.beforeAll(async () => {
-    const ctx = await request.newContext();
-    await ctx.post(`${BASE_URL}/auth/register`, { data: TEST_USER });
-    const loginRes = await ctx.post(`${BASE_URL}/auth/login`, {
   test.beforeAll(async ({ request }) => {
     await request.post(`${BASE_URL}/auth/register`, { data: TEST_USER });
     const loginRes = await request.post(`${BASE_URL}/auth/login`, {
@@ -38,7 +35,6 @@ test.describe("Books – Protected Routes", () => {
     });
     const body = await loginRes.json();
     authToken = body.data.token; // { error: null, data: { userId, token } }
-    await ctx.dispose();
   });
 
   // ── POST /books ──────────────────────────────
@@ -133,3 +129,4 @@ test.describe("Books – Protected Routes", () => {
     expect(res.status()).toBe(404);
   });
 });
+}
