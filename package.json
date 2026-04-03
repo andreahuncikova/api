@@ -57,6 +57,7 @@
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "eslint": "^10.1.0",
+    "start-server-and-test": "^3.0.0",
     "typescript-eslint": "^8.57.2"
   }
 }
