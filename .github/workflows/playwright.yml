@@ -43,7 +43,7 @@ jobs:
           npm run build --if-present
           npx start-server-and-test start-ci http://127.0.0.1:4000/api "npx playwright test"
         env:
-          PORT: 4000
+          PORT: 4000 
           NODE_ENV: test
           DBHOST: ${{ secrets.DBHOST }}
           TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}

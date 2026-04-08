@@ -9,40 +9,27 @@ import { connect, disconnect } from "../repository/database";
 
 dotenvFlow.config();
 
-/**
- * Seed the database with data
- */
 export async function seed() {
   try {
     await connect();
-
     await deleteAllData();
     await seedData();
     console.log("Seeding process completed successfully...");
     process.exit();
   } catch (err) {
     console.log("Error Seeding data." + err);
-  }
-  finally {
+  } finally {
     await disconnect();
   }
-};
+}
 
-/**
- * Delete all data from the database
- */
 export async function deleteAllData() {
   await BookModel.deleteMany();
   await userModel.deleteMany();
-
   console.log("Cleared data successfully...");
-};
+}
 
-/**
- * Seed data into the database
- */
 export async function seedData() {
-  // hash the password
   const salt = await bcrypt.genSalt(10);
   const passwordHash = await bcrypt.hash("12345678", salt);
 
@@ -58,26 +45,23 @@ export async function seedData() {
   user2.password = passwordHash;
   await user2.save();
 
-  // Generate fake book
-    for (let i = 0; i < 20; i++) {
-        await new BookModel({
-            title: faker.commerce.productName(),
-            author: faker.person.fullName(),
-            image: "https://picsum.photos/500/500",
-            price: parseFloat(faker.commerce.price({ min: 5, max: 5000 })),
-            genre: faker.music.genre(),
-            publishedYear: faker.date.past({ years: 50 }).getFullYear(),
-            pages: faker.number.int({ min: 50, max: 1200 }),
-            summary: faker.lorem.paragraph(),
-            available: faker.datatype.boolean(),
-            _createdBy: user1.id
-        }).save();
-    }
-
-    console.log("Seeded data successfully...");
+  // Generate fake books using faker.book module (requires faker >= 9.1)
+  for (let i = 0; i < 20; i++) {
+    await new BookModel({
+      title: faker.book.title(),           // real book titles
+      author: faker.book.author(),         // real author names
+      image: `https://picsum.photos/seed/${faker.string.alphanumeric(6)}/300/450`,
+      price: parseFloat(faker.commerce.price({ min: 8, max: 35 })),
+      genre: faker.book.genre(),           // real book genres
+      publishedYear: faker.date.past({ years: 50 }).getFullYear(),
+      pages: faker.number.int({ min: 80, max: 900 }),
+      summary: faker.lorem.paragraph(),
+      available: faker.datatype.boolean({ probability: 0.8 }),
+      _createdBy: user1.id
+    }).save();
+  }
 
   console.log("Seeded data successfully...");
-};
+}
 
-// start the actual seeding
 seed();
