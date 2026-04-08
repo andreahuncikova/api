@@ -50,7 +50,7 @@ export async function seedData() {
     await new BookModel({
       title: faker.book.title(),           // real book titles
       author: faker.book.author(),         // real author names
-      image: `https://picsum.photos/seed/${faker.string.alphanumeric(6)}/300/450`,
+      image: `https://covers.openlibrary.org/b/id/${faker.number.int({ min: 1000, max: 14000000 })}-L.jpg`,
       price: parseFloat(faker.commerce.price({ min: 8, max: 35 })),
       genre: faker.book.genre(),           // real book genres
       publishedYear: faker.date.past({ years: 50 }).getFullYear(),

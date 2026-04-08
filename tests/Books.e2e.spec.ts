@@ -12,7 +12,7 @@ const BOOK_PAYLOAD = {
   pages: 220,
   summary: "An end-to-end test book.",
   available: true,
-};
+}; 
 
 
 export default function booksE2eTests() {
