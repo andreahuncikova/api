@@ -81,7 +81,7 @@ test.describe("Books – Public Routes", () => {
     }
   });
 
-  test("GET /books/:id with malformed ID should return 400 or 500", async ({ request }) => {
+  test("GET /books/:id with wrong ID should return 400 or 500", async ({ request }) => {
     const res = await request.get(`${BASE_URL}/books/not-a-valid-id`);
 
     expect([400, 500]).toContain(res.status());
