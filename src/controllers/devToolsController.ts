@@ -7,68 +7,59 @@ import * as cron from "node-cron";
 import { ScheduledTask } from "node-cron";
 import https from "https";
 
-// Settings
 const MINUTES_DELTA = 1;
 const URL = "https://api-e7dw.onrender.com/api-docs/";
+
 let counter = 0;
-let task: ScheduledTask;
+let task: ScheduledTask | null = null;
+let stopTimeout: ReturnType<typeof setTimeout> | null = null;
 
-/**
-   * Small helper function to ping the server and output to console.
-   */
 function pingServer() {
-
   https.get(URL, () => {
     counter -= MINUTES_DELTA;
-    console.log('Pinged the server');
-    console.log("Minutes Left: ", counter);
+    console.log('Pinged the server. Minutes left:', counter);
   });
 }
 
-/**
-   * Small helper function to stop the task
-   */
 function stopPingingServer() {
-  task.stop();
-  console.log('Stopped the cron job due to inactivity');
+  if (task) {
+    task.stop();
+    task = null;
+    console.log('Stopped the cron job due to inactivity');
+  }
 }
 
-/**
- * Stop and clear any scheduled tasks
- */
 function cleanUpTasks() {
-  // Clean up any existing tasks
-  for (const task of cron.getTasks().values()) {
-    task.stop();
+  // clear pending stop timeout so it doesn't fire and kill the next cron
+  if (stopTimeout) {
+    clearTimeout(stopTimeout);
+    stopTimeout = null;
+  }
+  // stop and remove all scheduled tasks
+  for (const t of cron.getTasks().values()) {
+    t.stop();
   }
   cron.getTasks().clear();
+  task = null;
 }
 
-/**
-   * 
-   * @param req 
-   * @param res 
-   */
 export async function startCron(req: Request, res: Response) {
-
   try {
     cleanUpTasks();
 
-    const cronPattern = "*/" + MINUTES_DELTA + " * * * *";
-    // Docs here: https://crontab.guru/#*/5_*_*_*_*
     const totalDuration = parseInt(req.params.duration as string) || 60;
+    counter = totalDuration;
 
-    //Initialize the task with the specified cronPattern
-    counter = totalDuration; // set counter, so we can output how much time is left
-    task = cron.schedule(cronPattern, pingServer,);
+    const cronPattern = "*/" + MINUTES_DELTA + " * * * *";
+    task = cron.schedule(cronPattern, pingServer);
     task.start();
 
-    setTimeout(stopPingingServer, totalDuration * 60 * 1000);
+    stopTimeout = setTimeout(stopPingingServer, totalDuration * 60 * 1000);
 
     res.status(200).send("Started background task (duration:" + totalDuration + " mins)");
 
   } catch (error) {
-    console.log("Error:" + error); // Debug info
+    console.log("Error:" + error);
     res.status(500).send(error);
   }
-};
+}

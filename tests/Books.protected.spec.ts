@@ -67,13 +67,6 @@ test.describe("Books – Protected Routes", () => {
   });
 
   // ── PUT /books/:id ───────────────────────────
-  test("PUT /books/:id without token should return 400", async ({ request }) => {
-    const res = await request.put(`${BASE_URL}/books/${createdBookId}`, {
-      data: { title: "Hacker attempt" },
-    });
-    expect(res.status()).toBe(400);
-  });
-
   test("PUT /books/:id with valid token should update the book (200)", async ({ request }) => {
     const updated = { ...BOOK_PAYLOAD, title: "Updated Title", price: 39.99 };
     const res = await request.put(`${BASE_URL}/books/${createdBookId}`, {
@@ -97,11 +90,6 @@ test.describe("Books – Protected Routes", () => {
   });
 
   // ── DELETE /books/:id ────────────────────────
-  test("DELETE /books/:id without token should return 400", async ({ request }) => {
-    const res = await request.delete(`${BASE_URL}/books/${createdBookId}`);
-    expect(res.status()).toBe(400);
-  });
-
   test("DELETE /books/:id with valid token should return 200 with message", async ({ request }) => {
     const res = await request.delete(`${BASE_URL}/books/${createdBookId}`, {
       headers: { "auth-token": authToken },

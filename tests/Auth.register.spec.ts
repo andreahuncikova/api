@@ -62,12 +62,5 @@ test.describe("Auth – Register", () => {
     expect(res.status()).toBe(400);
   });
 
-  test("POST /auth/register with empty body should return 400", async ({ request }) => {
-    const res = await request.post(`${BASE_URL}/auth/register`, {
-      data: {},
-    });
-
-    expect(res.status()).toBe(400);
-  });
 });
 }

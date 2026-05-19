@@ -2,8 +2,8 @@ import { Schema, model } from "mongoose";
 import { Book } from "../interfaces/book";
 
 const bookSchema = new Schema<Book>({
-    title: { type: String, required: true, min: 1, max: 255 },
-    author: { type: String, required: true, min: 1, max: 255 },
+    title: { type: String, required: true, minlength: 1, maxlength: 255 },
+    author: { type: String, required: true, minlength: 1, maxlength: 255 },
     image: { type: String, required: true },
     price: { type: Number, required: true },
     genre: { type: String, required: false, max: 100 },

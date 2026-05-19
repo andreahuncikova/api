@@ -13,40 +13,27 @@ import Joi, { ValidationResult } from "joi";
 // Project imports
 import { userModel } from "../models/userModel";
 import { User } from "../interfaces/user";
-import { connect, disconnect } from '../repository/database';
 
 /**
  * Register a new user
- * @param req 
- * @param res 
- * @returns 
  */
 export async function registerUser(req: Request, res: Response) {
-
   try {
-    // check if the user registration info is valid
     const { error } = validateUserRegistrationInfo(req.body);
-
     if (error) {
       res.status(400).json({ error: error.details[0].message });
       return;
     }
 
-    await connect();
-
-    // check if the email is already registered
     const emailExists = await userModel.findOne({ email: req.body.email });
-
     if (emailExists) {
-    res.status(409).json({ error: "Email already exists." });
-    return;
+      res.status(409).json({ error: "Email already exists." });
+      return;
     }
 
-    // hash the password before saving the user to the repository
     const salt = await bcrypt.genSalt(10);
     const passwordHashed = await bcrypt.hash(req.body.password, salt);
 
-    // create a new user object and save it to the repository
     const userObject = new userModel({
       name: req.body.name,
       email: req.body.email,
@@ -57,93 +44,55 @@ export async function registerUser(req: Request, res: Response) {
     res.status(201).json({ error: null, data: savedUser._id });
 
   } catch (error) {
-  console.error(error);
-
-  res.status(500).json({
-    error: "Internal server error"
-  });
-}
-  finally {
-    await disconnect();
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
-};
-
-
+}
 
 
 /**
  * Login an existing user
- * @param req 
- * @param res 
- * @returns 
  */
 export async function loginUser(req: Request, res: Response) {
-
   try {
-
-    // validate user login info
     const { error } = validateUserLoginInfo(req.body);
-
     if (error) {
       res.status(400).json({ error: error.details[0].message });
       return;
     }
 
-    // find the user in the repository
-    await connect();
-
     const user: User | null = await userModel.findOne({ email: req.body.email });
-
     if (!user) {
       res.status(400).json({ error: "Password or email is wrong." });
       return;
     }
-    else {
-      // create and assign a token to the user
-      const validPassword: boolean = await bcrypt.compare(req.body.password, user.password);
 
-      if (!validPassword) {
-        res.status(400).json({ error: "Password or email is wrong." });
-        return;
-      }
-
-      const userId: string = user.id!;
-      const token: string = jwt.sign(
-        {
-          // payload
-          name: user.name,
-          email: user.email,
-          id: userId
-        },
-        process.env.TOKEN_SECRET as string,
-        { expiresIn: '2h' }
-      );
-
-      // add the token to the response header and send it back to the client
-      res.status(200).header("auth-token", token).json({ error: null, data: { userId, token } });
+    const validPassword: boolean = await bcrypt.compare(req.body.password, user.password);
+    if (!validPassword) {
+      res.status(400).json({ error: "Password or email is wrong." });
+      return;
     }
 
-  } catch (error) {
-  console.error(error);
+    const userId: string = user.id!;
+    const token: string = jwt.sign(
+      { name: user.name, email: user.email, id: userId },
+      process.env.TOKEN_SECRET as string,
+      { expiresIn: '2h' }
+    );
 
-  res.status(500).json({
-    error: "Internal server error"
-  });
-}
-  finally {
-    await disconnect();
+    res.status(200).header("auth-token", token).json({ error: null, data: { userId, token } });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
-};
+}
 
 
 /**
- * Middleware function to verify the token sent by the client in the request header
- * @param req 
- * @param res 
- * @param next 
+ * Middleware to verify the JWT token in the request header
  */
 export function verifyToken(req: Request, res: Response, next: NextFunction) {
-
   const token = req.header("auth-token");
 
   if (!token) {
@@ -152,43 +101,34 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
   }
 
   try {
-    if (token)
-      jwt.verify(token, process.env.TOKEN_SECRET as string);
-
+    jwt.verify(token, process.env.TOKEN_SECRET as string);
     next();
-  }
-  catch {
+  } catch {
     res.status(401).json({ error: "Invalid Token." });
   }
 }
 
 
 /**
- * Check if the user registration info is valid
- * @param data 
+ * Validate user registration input
  */
 export function validateUserRegistrationInfo(data: User): ValidationResult {
-
   const schema = Joi.object({
     name: Joi.string().min(6).max(255).required(),
     email: Joi.string().email().min(6).max(255).required(),
-    password: Joi.string().min(6).max(20).required()
+    password: Joi.string().min(6).max(255).required()
   });
-
   return schema.validate(data);
 }
 
 
 /**
- * Check if the user login info is valid
- * @param data 
+ * Validate user login input
  */
 export function validateUserLoginInfo(data: User): ValidationResult {
-
   const schema = Joi.object({
     email: Joi.string().email().min(6).max(255).required(),
-    password: Joi.string().min(6).max(20).required()
+    password: Joi.string().min(6).max(255).required()
   });
-
   return schema.validate(data);
 }

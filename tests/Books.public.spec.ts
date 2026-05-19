@@ -42,18 +42,12 @@ test.describe("Books – Public Routes", () => {
     seededBookId = book._id;
   });
 
-  test("GET /books should return 200 and an array", async ({ request }) => {
+  test("GET /books should return 200 with a non-empty array", async ({ request }) => {
     const res = await request.get(`${BASE_URL}/books`);
 
     expect(res.status()).toBe(200);
     const body = await res.json();
     expect(Array.isArray(body)).toBeTruthy();
-  });
-
-  test("GET /books should contain at least one book", async ({ request }) => {
-    const res = await request.get(`${BASE_URL}/books`);
-    const body = await res.json();
-
     expect(body.length).toBeGreaterThan(0);
   });
 
