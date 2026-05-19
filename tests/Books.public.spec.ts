@@ -78,7 +78,7 @@ test.describe("Books – Public Routes", () => {
       const body = await res.json();
       expect(Array.isArray(body)).toBeTruthy();
       expect(body.length).toBe(0);
-    }
+    } 
   });
 
   test("GET /books/:id with wrong ID should return 400 or 500", async ({ request }) => {
