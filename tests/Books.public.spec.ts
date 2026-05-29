@@ -51,28 +51,21 @@ test.describe("Books – Public Routes", () => {
     expect(body.length).toBeGreaterThan(0);
   });
 
-  test("GET /books/:id should return an array with the correct book (200)", async ({ request }) => {
+  test("GET /books/:id should return the correct book (200)", async ({ request }) => {
     const res = await request.get(`${BASE_URL}/books/${seededBookId}`);
 
     expect(res.status()).toBe(200);
     const body = await res.json();
-    expect(Array.isArray(body)).toBeTruthy();
-    expect(body.length).toBeGreaterThan(0);
-    expect(body[0]._id).toBe(seededBookId);
-    expect(body[0].title).toBe(BOOK_PAYLOAD.title);
-    expect(body[0].author).toBe(BOOK_PAYLOAD.author);
-    expect(body[0].price).toBe(BOOK_PAYLOAD.price);
+    expect(body._id).toBe(seededBookId);
+    expect(body.title).toBe(BOOK_PAYLOAD.title);
+    expect(body.author).toBe(BOOK_PAYLOAD.author);
+    expect(body.price).toBe(BOOK_PAYLOAD.price);
   });
 
-  test("GET /books/:id with non-existent ID returns empty array", async ({ request }) => {
+  test("GET /books/:id with non-existent ID returns 404", async ({ request }) => {
     const res = await request.get(`${BASE_URL}/books/000000000000000000000000`);
 
-    expect([200, 404]).toContain(res.status());
-    if (res.status() === 200) {
-      const body = await res.json();
-      expect(Array.isArray(body)).toBeTruthy();
-      expect(body.length).toBe(0);
-    } 
+    expect(res.status()).toBe(404);
   });
 
   test("GET /books/:id with wrong ID should return 400 or 500", async ({ request }) => {

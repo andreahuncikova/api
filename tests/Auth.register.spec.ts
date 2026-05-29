@@ -23,7 +23,7 @@ test.describe("Auth – Register", () => {
     expect(body).toHaveProperty("data");
   });
 
-  test("POST /auth/register with duplicate email should return 400", async ({ request }) => {
+  test("POST /auth/register with duplicate email should return 409", async ({ request }) => {
     const duplicateUser = {
       name: "DuplicateUser",
       email: "duplicate@example.com",

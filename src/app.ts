@@ -16,17 +16,9 @@ const app: Application = express();
 //setup CORS middleware
 function setupCors() {
     app.use(cors({
-        // Allow all origins for development purposes
         origin: '*',
-
-        // Allow specific HTTP methods
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
-
-        // Allow specific headers
         allowedHeaders: ['auth-token', 'Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
-
-        // allow credentials if needed
-        credentials: true,
     }));
 } 
 

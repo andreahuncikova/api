@@ -2,9 +2,9 @@ import { Schema, model } from "mongoose";
 import { User } from "../interfaces/user";
 
 const userSchema = new Schema<User>({
-    name: { type: String, required: true, min: 6, max: 255},
-    email: { type: String, required: true, min: 6, max: 255, unique: true },
-    password: { type: String, required: true, min: 6, max: 255},
+    name: { type: String, required: true, minlength: 6, maxlength: 255 },
+    email: { type: String, required: true, minlength: 6, maxlength: 255, unique: true },
+    password: { type: String, required: true, minlength: 6, maxlength: 255 },
     registerDate: { type: Date, default: Date.now, required: true}
 });
 

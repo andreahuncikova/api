@@ -3,7 +3,7 @@ import { User } from "./user";
 export interface Book {
     title: string;
     author: string;
-    image: string;  
+    image: string;
     price: number;
     genre?: string;
     publishedYear?: number;
@@ -11,4 +11,7 @@ export interface Book {
     summary?: string;
     available?: boolean;
     _createdBy?: User['id'];
+    hasDiscount?: boolean;
+    discount?: number;
+    hidden?: boolean;
 }

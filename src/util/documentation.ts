@@ -21,7 +21,7 @@ export function setupDocumentation(app: Application) {
         description: 'Local development server',
       },
       {
-        url: 'https://api-e7dw.onrender.com/api-docs/',
+        url: 'https://api-e7dw.onrender.com/api',
         description: 'Remote development server',
       }
     ],
@@ -47,6 +47,9 @@ export function setupDocumentation(app: Application) {
             summary: { type: 'string' },
             available: { type: 'boolean' },
             _createdBy: { type: 'string' },
+            hasDiscount: { type: 'boolean' },
+            discount: { type: 'number' },
+            hidden: { type: 'boolean' },
           },
         },
         User: {

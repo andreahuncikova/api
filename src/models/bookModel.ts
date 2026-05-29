@@ -11,7 +11,10 @@ const bookSchema = new Schema<Book>({
     pages: { type: Number, required: false },
     summary: { type: String, required: false, max: 1024 },
     available: { type: Boolean, required: true, default: true },
-    _createdBy: { type: String, ref: "User", required: false } 
+    _createdBy: { type: String, ref: "User", required: false },
+    hasDiscount: { type: Boolean, required: false, default: false },
+    discount: { type: Number, required: false, default: 0 },
+    hidden: { type: Boolean, required: false, default: false },
 }, { timestamps: true });
 
 export const BookModel = model<Book>("Book", bookSchema);

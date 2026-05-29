@@ -13,7 +13,7 @@ export async function createBook(req: Request, res: Response): Promise<void> {
 
 export async function getBooks(req: Request, res: Response) {
     try {
-        const result = await BookModel.find({});
+        const result = await BookModel.find({ hidden: { $ne: true } });
         res.status(200).json(result);
     } catch (error) {
         res.status(500).json({ message: "Error retrieving books", error });
@@ -22,7 +22,11 @@ export async function getBooks(req: Request, res: Response) {
 
 export async function getBookById(req: Request, res: Response) {
     try {
-        const result = await BookModel.find({ _id: req.params.id });
+        const result = await BookModel.findById(req.params.id);
+        if (!result) {
+            res.status(404).json({ message: "Book not found" });
+            return;
+        }
         res.status(200).json(result);
     } catch (error) {
         res.status(500).json({ message: "Error retrieving book", error });

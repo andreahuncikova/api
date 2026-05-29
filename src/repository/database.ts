@@ -6,7 +6,7 @@ export async function testConnection() {
     try {
         await connect();
         await disconnect();
-        console.log("Databse connection test successful (connected and disconnected)");
+        console.log("Database connection test successful (connected and disconnected)");
     }
     catch (error) {
         console.error("Database connection test failed:", error);

@@ -101,13 +101,9 @@ test.describe("Books – Protected Routes", () => {
     expect(body.message).toBe("Book deleted successfully");
   });
 
-  test("GET /books/:id after delete should return empty array", async ({ request }) => {
+  test("GET /books/:id after delete should return 404", async ({ request }) => {
     const res = await request.get(`${BASE_URL}/books/${createdBookId}`);
-    expect([200, 404]).toContain(res.status());
-    if (res.status() === 200) {
-      const body = await res.json();
-      expect(body.length).toBe(0);
-    }
+    expect(res.status()).toBe(404);
   });
 
   test("DELETE /books/:id already deleted should return 404", async ({ request }) => {

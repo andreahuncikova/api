@@ -55,13 +55,12 @@ test.describe("Full E2E Flow", () => {
     expect(createdBook).toHaveProperty("_id");
     const bookId = createdBook._id;
 
-    // 4. Read book — find() returns an array
+    // 4. Read book
     const getRes = await request.get(`${BASE_URL}/books/${bookId}`);
     expect(getRes.status()).toBe(200);
     const getBody = await getRes.json();
-    expect(Array.isArray(getBody)).toBeTruthy();
-    expect(getBody[0].title).toBe(BOOK_PAYLOAD.title);
-    expect(getBody[0].price).toBe(BOOK_PAYLOAD.price);
+    expect(getBody.title).toBe(BOOK_PAYLOAD.title);
+    expect(getBody.price).toBe(BOOK_PAYLOAD.price);
 
     // 5. Update book — returns { message, book }
     const updateRes = await request.put(`${BASE_URL}/books/${bookId}`, {
@@ -79,13 +78,9 @@ test.describe("Full E2E Flow", () => {
     const deleteBody = await deleteRes.json();
     expect(deleteBody.message).toBe("Book deleted successfully");
 
-    // 7. Confirm deletion — find() returns empty array
+    // 7. Confirm deletion
     const confirmRes = await request.get(`${BASE_URL}/books/${bookId}`);
-    expect([200, 404]).toContain(confirmRes.status());
-    if (confirmRes.status() === 200) {
-      const confirmBody = await confirmRes.json();
-      expect(confirmBody.length).toBe(0);
-    }
+    expect(confirmRes.status()).toBe(404);
   });
 });
 }
